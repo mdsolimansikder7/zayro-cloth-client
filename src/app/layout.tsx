@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Archivo_Black, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import ThemeProvider from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toast";
 import { AccountDataProvider } from "@/components/account-data-provider";
 import AuthProvider from "@/components/auth-provider";
 import { CartDataProvider } from "@/components/cart-data-provider";
@@ -35,13 +36,15 @@ export default function RootLayout({
     <html lang="en" className={`${archivoBlack.variable} ${plusJakarta.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
-          <AuthProvider>
-            <StorefrontProvider>
-              <AccountDataProvider>
-                <CartDataProvider>{children}</CartDataProvider>
-              </AccountDataProvider>
-            </StorefrontProvider>
-          </AuthProvider>
+          <Toaster>
+            <AuthProvider>
+              <StorefrontProvider>
+                <AccountDataProvider>
+                  <CartDataProvider>{children}</CartDataProvider>
+                </AccountDataProvider>
+              </StorefrontProvider>
+            </AuthProvider>
+          </Toaster>
         </ThemeProvider>
       </body>
     </html>

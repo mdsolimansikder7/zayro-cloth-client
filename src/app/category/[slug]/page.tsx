@@ -24,7 +24,7 @@ export default async function CategoryPage(props: PageProps<"/category/[slug]">)
       <AnnouncementBar />
       <SiteHeader />
       <main className="bg-background">
-        <div className="mx-auto max-w-[1440px] px-4 pb-16 pt-4 md:px-8 lg:px-16 lg:pb-24">
+        <div className="mx-auto max-w-[1440px] px-4 pb-16 pt-5 md:px-8 lg:px-16 lg:pb-24">
           <nav className="flex items-center gap-1 text-xs text-muted-foreground sm:text-sm">
             <Link href="/" className="hover:text-foreground">Home</Link>
             <ChevronRight className="size-3.5" />

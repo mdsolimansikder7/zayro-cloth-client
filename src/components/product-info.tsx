@@ -129,7 +129,7 @@ export default function ProductInfo({ product }: { product: Product }) {
       {/* color choose */}
       <div className="border-b border-border py-5">
         <p className="text-sm text-muted-foreground">Select Colors</p>
-        <div className="mt-3 flex items-center gap-3">
+        <div className="mt-3 flex flex-wrap items-center gap-3">
           {product.colors.map((color, index) => (
             <button
               key={color}
@@ -169,7 +169,7 @@ export default function ProductInfo({ product }: { product: Product }) {
       </div>
 
       {/* quantity + add to cart */}
-      <div className="mt-5 flex items-center gap-3">
+      <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
         {/* quantity: - shongkha + */}
         <div className="flex h-12 items-center gap-3 rounded-full bg-muted px-4">
           <button

@@ -124,8 +124,19 @@
   }
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
   }
   html {
     @apply font-sans;
+  }
+  /* Ensure touch targets are at least 44px on mobile */
+  @media (max-width: 767px) {
+    button, a, [role="button"], input, select, textarea {
+      min-height: 44px;
+    }
+    /* Make product cards more readable on small screens */
+    .product-card-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 }

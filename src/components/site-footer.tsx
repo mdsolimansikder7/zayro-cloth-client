@@ -32,8 +32,8 @@ export default function SiteFooter({ showNewsletter = true }: { showNewsletter?:
     <footer className="bg-muted">
       <div className="mx-auto max-w-[1440px] px-4 md:px-8 lg:px-16">
         {showNewsletter && <div className="-mt-4 lg:-mt-10"><Newsletter /></div>}
-        <div className="grid gap-8 py-10 lg:grid-cols-[1.4fr_repeat(3,1fr)] lg:gap-6 lg:py-12">
-          <div>
+        <div className="grid grid-cols-2 gap-x-5 gap-y-8 py-10 sm:gap-8 lg:grid-cols-[1.4fr_repeat(3,1fr)] lg:gap-6 lg:py-12">
+          <div className="col-span-2 lg:col-span-1">
             <Link href="/" className="font-heading text-2xl tracking-tight lg:text-[32px]">ZAYRO</Link>
             {storefront.brandDescription && <p className="mt-3 max-w-[250px] text-xs leading-5 text-muted-foreground">{storefront.brandDescription}</p>}
             <div className="mt-5 flex items-center gap-2">

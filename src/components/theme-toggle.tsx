@@ -1,20 +1,11 @@
 "use client";
 
-import { useTheme } from "next-themes";
+import { useTheme } from "@/components/theme-provider";
 import { Moon, Sun } from "lucide-react";
-import { useSyncExternalStore } from "react";
-
-const subscribe = () => () => {};
-const getSnapshot = () => true;
-const getServerSnapshot = () => false;
 
 export default function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme();
-  const mounted = useSyncExternalStore(
-    subscribe,
-    getSnapshot,
-    getServerSnapshot,
-  );
+  const { resolvedTheme, setTheme, mounted } = useTheme();
+
   if (!mounted) return <div className="size-5" />;
 
   const toggle = () => {

@@ -69,13 +69,15 @@ export function GoogleSignInButton({
           callback: (response) => onCredential(response.credential),
         });
         containerRef.current.replaceChildren();
+        const buttonWidth = Math.min(360, containerRef.current.clientWidth);
         googleId.renderButton(containerRef.current, {
           type: "standard",
           theme: "outline",
           size: "large",
           text: "continue_with",
+          locale: "en",
           shape: "rectangular",
-          width: 360,
+          width: buttonWidth,
         });
       })
       .catch((error: unknown) => {
@@ -87,5 +89,5 @@ export function GoogleSignInButton({
     };
   }, [onCredential, onError]);
 
-  return <div ref={containerRef} className="flex min-h-10 justify-center" />;
+  return <div ref={containerRef} className="flex min-h-10 w-full justify-center overflow-hidden" />;
 }

@@ -51,7 +51,7 @@ export default function Newsletter() {
   return (
     <section
       aria-labelledby="newsletter-title"
-      className="relative isolate overflow-hidden rounded-[24px] bg-primary px-6 py-8 text-primary-foreground shadow-[0_24px_70px_-38px_rgba(0,0,0,0.65)] sm:px-9 sm:py-10 lg:px-14 lg:py-12"
+      className="relative isolate overflow-hidden rounded-[24px] bg-primary px-5 py-7 text-primary-foreground shadow-[0_24px_70px_-38px_rgba(0,0,0,0.65)] sm:px-9 sm:py-10 lg:px-14 lg:py-12"
     >
       <div
         aria-hidden="true"
@@ -70,7 +70,7 @@ export default function Newsletter() {
           </span>
           <h2
             id="newsletter-title"
-            className="mt-5 max-w-[15ch] font-heading text-[30px] uppercase leading-[1.08] tracking-tight sm:text-4xl lg:text-[44px]"
+            className="mt-5 max-w-[15ch] font-heading text-[28px] uppercase leading-[1.08] tracking-tight sm:text-4xl lg:text-[44px]"
           >
             A little style in your inbox.
           </h2>

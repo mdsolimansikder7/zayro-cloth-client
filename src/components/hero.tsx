@@ -36,11 +36,11 @@ export default function Hero() {
 
   return (
     <section className="bg-[#f1f0ef] text-[#121212]">
-      <div className="mx-auto max-w-[1500px]">
-        <div className="overflow-hidden bg-[#f1f0ef] px-4 py-8 sm:px-6 lg:px-10 xl:px-16">
+      <div className="mx-auto max-w-[1440px]">
+        <div className="overflow-hidden bg-[#f1f0ef] px-4 py-7 sm:px-6 sm:py-8 lg:px-8 xl:px-16">
           <div className="relative grid items-center gap-8 lg:min-h-[620px] lg:grid-cols-[1.08fr_0.92fr] lg:gap-4">
             <div className="pt-2 lg:pl-2">
-              <h1 className="max-w-[620px] font-black uppercase leading-[0.9] tracking-[-0.06em] text-[42px] sm:text-[56px] lg:text-[72px]">
+              <h1 className="max-w-[620px] font-black uppercase leading-[0.92] tracking-[-0.06em] text-[36px] sm:text-[56px] lg:text-[72px]">
                 {hero.title}
               </h1>
 
@@ -57,22 +57,22 @@ export default function Hero() {
                 </Link>
               )}
 
-              <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6 lg:mt-10">
+              <div className="mt-8 grid grid-cols-3 gap-3 sm:flex sm:flex-wrap sm:gap-6 lg:mt-10">
                 {stats.map((stat, index) => (
                   <div
                     key={`${stat.label}-${index}`}
                     className={
                       index === 0
-                        ? "min-w-[112px]"
+                        ? "min-w-0"
                         : index === 1
-                          ? "border-l border-[#c5c5c1] pl-4 min-w-[148px]"
-                          : "border-l border-[#c5c5c1] pl-4 min-w-[170px]"
+                          ? "min-w-0 border-l border-[#c5c5c1] pl-3 sm:pl-4"
+                          : "min-w-0 border-l border-[#c5c5c1] pl-3 sm:pl-4"
                     }
                   >
-                    <p className="font-heading text-[26px] font-black leading-none tracking-[-0.05em] sm:text-[30px]">
+                    <p className="font-heading text-[22px] font-black leading-none tracking-[-0.05em] sm:text-[30px]">
                       {stat.value}
                     </p>
-                    <p className="mt-2 max-w-[150px] text-[13px] leading-5 text-[#4d4d4d] sm:text-sm">
+                    <p className="mt-2 max-w-[150px] text-[10px] leading-4 text-[#4d4d4d] sm:text-sm">
                       {stat.label}
                     </p>
                   </div>
@@ -84,7 +84,7 @@ export default function Hero() {
               <DiamondStar className="absolute right-[8%] top-[9%] size-16 text-[#151515] sm:size-20 lg:size-24" />
               <DiamondStar className="absolute left-[12%] top-[32%] size-9 text-[#151515] sm:size-12" />
 
-              <div className="relative h-[380px] w-[80%] max-w-[520px] overflow-hidden sm:h-[460px] lg:h-[560px]">
+              <div className="relative h-[330px] w-full max-w-[520px] overflow-hidden sm:h-[460px] lg:h-[560px]">
                 <img
                   src={hero.image}
                   alt={hero.title}
