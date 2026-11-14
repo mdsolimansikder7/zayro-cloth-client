@@ -22,7 +22,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Zayro"
+  title: "Zayro",
   description:
     "Browse through our diverse range of meticulously crafted garments, designed to bring out your individuality and cater to your sense of style.",
   icons: [
