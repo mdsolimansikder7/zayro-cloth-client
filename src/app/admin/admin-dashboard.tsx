@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
-import { useRouter } from "next/navigation";
 import {
   Boxes,
   CircleDollarSign,
@@ -37,7 +36,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useSession } from "@/lib/auth-client";
 import { apiFetch } from "@/lib/store-api";
 import type { Product } from "@/types/product";
 import { formatMoney } from "@/lib/format-money";
@@ -153,8 +151,6 @@ function messageFrom(error: unknown) {
 }
 
 export default function AdminDashboard() {
-  const { data: session, isPending } = useSession();
-  const router = useRouter();
   const [data, setData] = useState<DashboardData | null>(null);
   const [section, setSection] = useState<Section>("overview");
   const [loading, setLoading] = useState(true);
@@ -172,14 +168,6 @@ export default function AdminDashboard() {
   const [sendingCampaign, setSendingCampaign] = useState(false);
   const [campaignDialogOpen, setCampaignDialogOpen] = useState(false);
 
-  const isAdmin = session?.user.role === "admin";
-
-  useEffect(() => {
-    if (isPending) return;
-    if (!session?.user) router.replace("/sign-in");
-    else if (!isAdmin) router.replace("/");
-  }, [isAdmin, isPending, router, session]);
-
   const loadData = useCallback(async () => {
     setLoading(true);
     setError("");
@@ -194,7 +182,6 @@ export default function AdminDashboard() {
   }, []);
 
   useEffect(() => {
-    if (isPending || !isAdmin) return;
     const initialLoad = window.setTimeout(() => void loadData(), 0);
     window.addEventListener("focus", loadData);
     window.addEventListener("zayro:order-created", loadData);
@@ -205,7 +192,7 @@ export default function AdminDashboard() {
       window.removeEventListener("zayro:session-change", loadData);
       window.clearTimeout(initialLoad);
     };
-  }, [isAdmin, isPending, loadData]);
+  }, [loadData]);
 
   const filteredProducts = useMemo(
     () => data?.products.filter((product) =>
@@ -332,15 +319,6 @@ export default function AdminDashboard() {
     } finally {
       setSendingCampaign(false);
     }
-  }
-
-  if (isPending || !session?.user || !isAdmin) {
-    return (
-      <main className="flex min-h-screen items-center justify-center gap-3 bg-background text-muted-foreground">
-        <LoaderCircle className="size-5 animate-spin" aria-hidden="true" />
-        <span>Checking admin access…</span>
-      </main>
-    );
   }
 
   return (

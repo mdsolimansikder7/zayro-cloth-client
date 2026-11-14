@@ -34,6 +34,19 @@ export function setAuthToken(token: string | null) {
   window.dispatchEvent(new Event(SESSION_EVENT));
 }
 
+async function syncServerSession(token: string | null) {
+  try {
+    await fetch("/api/auth/session", token ? {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    } : { method: "DELETE" });
+  } catch {
+    // Protected routes remain safely unavailable until the session can be
+    // verified server-side.
+  }
+}
+
 export function AuthSessionProvider({ children }: { children: React.ReactNode }) {
   const [data, setData] = useState<AuthSession>(null);
   const [isPending, setIsPending] = useState(true);
@@ -50,6 +63,7 @@ export function AuthSessionProvider({ children }: { children: React.ReactNode })
     try {
       const result = (await apiFetch("auth/me")) as { user: AuthUser };
       setData({ user: result.user });
+      void syncServerSession(token);
     } catch (error) {
       if (error instanceof StoreApiError && (error.status === 401 || error.status === 403)) {
         setAuthToken(null);
@@ -85,7 +99,10 @@ async function postAuth(path: string, body: Record<string, unknown>): Promise<Ap
       method: "POST",
       body: JSON.stringify(body),
     })) as { user: AuthUser; token: string };
-    if (result.token) setAuthToken(result.token);
+    if (result.token) {
+      await syncServerSession(result.token);
+      setAuthToken(result.token);
+    }
     return { data: result };
   } catch (error) {
     if (error instanceof StoreApiError) {
@@ -140,6 +157,7 @@ export const authClient = {
         method: "POST",
         body: JSON.stringify({ email, otp }),
       }) as { user: AuthUser; token: string };
+      await syncServerSession(result.token);
       setAuthToken(result.token);
       return { data: result };
     } catch (error) {
@@ -190,4 +208,5 @@ export const authClient = {
 
 export async function signOut() {
   setAuthToken(null);
+  await syncServerSession(null);
 }

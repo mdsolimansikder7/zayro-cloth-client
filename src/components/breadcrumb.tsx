@@ -20,18 +20,19 @@ interface BreadcrumbProps {
 // right before the next label, so nothing can wrap to a new line.
 export default function Breadcrumb({ items, className }: BreadcrumbProps) {
   return (
-    <nav aria-label="Breadcrumb" className={className}>
-      <ol className={cn("flex flex-nowrap items-center gap-1.5 text-sm overflow-hidden whitespace-nowrap text-muted-foreground", className)}>
+    <nav aria-label="Breadcrumb" className={cn("min-w-0", className)}>
+      <ol className="flex w-full flex-nowrap items-center gap-1.5 whitespace-nowrap text-sm text-muted-foreground">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (
-            <li key={item.href ?? item.label ?? index} className="flex items-center gap-1.5 min-w-0">
+            <li key={item.href ?? item.label ?? index} className={cn("inline-flex items-center gap-1.5 shrink-0", isLast && "min-w-0 flex-1")}>
+              {index > 0 && <ChevronRight className="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />}
               {item.href ? (
                 <Link
                   href={item.href}
                   className={cn(
-                    !isLast ? "flex-shrink-0" : "",
-                    "truncate transition-colors hover:text-foreground",
+                    "transition-colors hover:text-foreground",
+                    isLast && "min-w-0 truncate",
                     isLast ? "text-foreground" : "text-muted-foreground"
                   )}
                 >
@@ -40,15 +41,13 @@ export default function Breadcrumb({ items, className }: BreadcrumbProps) {
               ) : (
                 <span
                   className={cn(
-                    !isLast ? "flex-shrink-0" : "",
-                    "truncate",
+                    isLast && "min-w-0 truncate",
                     isLast ? "text-foreground" : "text-muted-foreground"
                   )}
                 >
                   {item.label}
                 </span>
               )}
-              {!isLast && <ChevronRight className="size-4 shrink-0" aria-hidden="true" />}
             </li>
           );
         })}

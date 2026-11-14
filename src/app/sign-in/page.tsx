@@ -10,6 +10,11 @@ import AnnouncementBar from "@/components/announcement-bar";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 
+function returnToAfterSignIn() {
+  const callbackUrl = new URLSearchParams(window.location.search).get("callbackUrl");
+  return callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//") ? callbackUrl : "/";
+}
+
 export default function SignInPage() {
   const { data: session, isPending } = useSession();
   const [error, setError] = useState("");
@@ -17,7 +22,7 @@ export default function SignInPage() {
   const [googleLoading, setGoogleLoading] = useState(false);
 
   useEffect(() => {
-    if (!isPending && session?.user) window.location.replace("/");
+    if (!isPending && session?.user) window.location.replace(returnToAfterSignIn());
   }, [isPending, session]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -32,7 +37,7 @@ export default function SignInPage() {
       });
       if (signInError) {
         if (signInError.verificationRequired && signInError.email) {
-          window.location.assign(`/verify-email?email=${encodeURIComponent(signInError.email)}&returnTo=/`);
+          window.location.assign(`/verify-email?email=${encodeURIComponent(signInError.email)}&returnTo=${encodeURIComponent(returnToAfterSignIn())}`);
           return;
         }
         setError("Invalid email or password.");
@@ -44,7 +49,7 @@ export default function SignInPage() {
         return;
       }
 
-      window.location.replace("/");
+      window.location.replace(returnToAfterSignIn());
     } catch {
       setError("Invalid email or password.");
       toast.add({
@@ -69,7 +74,7 @@ export default function SignInPage() {
         type: "error",
       });
     } else {
-      window.location.replace("/");
+      window.location.replace(returnToAfterSignIn());
     }
     setGoogleLoading(false);
   };

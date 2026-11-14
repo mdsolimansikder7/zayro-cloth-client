@@ -44,7 +44,7 @@ export default function ProductCard({ product }: { product: Product }) {
   }
 
   return (
-    <article className="relative">
+    <article className="relative min-w-0">
       <button
         type="button"
         aria-label={isSaved ? `Remove ${product.title} from wishlist` : `Add ${product.title} to wishlist`}
@@ -68,14 +68,13 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
 
-        {/* product name - one line, fixed height so every card in a row matches */}
-        <h3 className="mt-4 line-clamp-1 h-[1.25rem] leading-none text-sm font-semibold sm:text-base">
+        <h3 title={product.title} className="mt-4 min-h-[2.5rem] line-clamp-2 text-sm font-semibold leading-snug">
           {product.title}
         </h3>
       </Link>
 
       {/* rating + number - consistent spacing on every card */}
-      <div className="mt-1.5 flex items-center gap-2">
+      <div className="mt-2 flex items-center gap-2">
         <Stars rating={product.rating} />
         <span className="text-xs text-muted-foreground">{product.rating}/5</span>
       </div>
@@ -83,7 +82,7 @@ export default function ProductCard({ product }: { product: Product }) {
       {/* price area - fixed two-line structure so card heights stay even */}
       <div className="mt-1.5">
         {/* line 1: current price + strikethrough old price */}
-        <div className="flex items-baseline gap-2 whitespace-nowrap">
+        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
           <span className="text-lg font-bold">{formatMoney(product.price)}</span>
 
           {product.oldPrice && (

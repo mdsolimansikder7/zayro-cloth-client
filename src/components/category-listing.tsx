@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, ChevronDown, SlidersHorizontal, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronDown, SlidersHorizontal, X } from "lucide-react";
 import CategoryFilters, { type SelectedFilters } from "@/components/category-filters";
 import FiltersPanel from "@/components/filters-panel";
 import ProductCard from "@/components/product-card";
@@ -42,6 +42,128 @@ const SORT_OPTIONS: { label: string; value: NonNullable<ProductQuery["sort"]> }[
 
 function categorySlug(value: string) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+function SortDropdown({ value, onChange }: { value: NonNullable<ProductQuery["sort"]>; onChange: (value: NonNullable<ProductQuery["sort"]>) => void }) {
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(() => Math.max(0, SORT_OPTIONS.findIndex((option) => option.value === value)));
+  const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const selectedOption = SORT_OPTIONS.find((option) => option.value === value) ?? SORT_OPTIONS[0];
+
+  useEffect(() => {
+    if (!open) return;
+    function closeOnOutsideClick(event: PointerEvent) {
+      if (!containerRef.current?.contains(event.target as Node)) setOpen(false);
+    }
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
+    }
+    document.addEventListener("pointerdown", closeOnOutsideClick);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsideClick);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [open]);
+
+  function moveActive(direction: 1 | -1) {
+    const nextIndex = (activeIndex + direction + SORT_OPTIONS.length) % SORT_OPTIONS.length;
+    setActiveIndex(nextIndex);
+    optionRefs.current[nextIndex]?.focus();
+  }
+
+  function openFromKeyboard(direction: 1 | -1) {
+    const selectedIndex = Math.max(0, SORT_OPTIONS.findIndex((option) => option.value === value));
+    const nextIndex = direction === 1 ? (selectedIndex + 1) % SORT_OPTIONS.length : (selectedIndex - 1 + SORT_OPTIONS.length) % SORT_OPTIONS.length;
+    setActiveIndex(nextIndex);
+    setOpen(true);
+    window.setTimeout(() => optionRefs.current[nextIndex]?.focus(), 0);
+  }
+
+  function choose(option: typeof SORT_OPTIONS[number]) {
+    onChange(option.value);
+    setOpen(false);
+    triggerRef.current?.focus();
+  }
+
+  return (
+    <div ref={containerRef} className="relative min-w-0 flex-1 lg:flex-none">
+      <button
+        ref={triggerRef}
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls="product-sort-options"
+        onClick={() => {
+          setActiveIndex(Math.max(0, SORT_OPTIONS.findIndex((option) => option.value === value)));
+          setOpen((current) => !current);
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "ArrowDown") {
+            event.preventDefault();
+            openFromKeyboard(1);
+          } else if (event.key === "ArrowUp") {
+            event.preventDefault();
+            openFromKeyboard(-1);
+          }
+        }}
+        className="flex h-11 w-full cursor-pointer items-center justify-end gap-1.5 rounded-none border-0 bg-transparent px-0 text-sm font-medium text-foreground shadow-none outline-none focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:w-auto"
+      >
+        <span className="hidden sm:inline text-muted-foreground">Sort by:</span>
+        <span>{selectedOption.label}</span>
+        <ChevronDown className={cn("size-4 shrink-0 transition-transform", open && "rotate-180")} aria-hidden="true" />
+      </button>
+      {open && (
+        <div
+          id="product-sort-options"
+          role="listbox"
+          aria-label="Sort products"
+          className="absolute right-0 z-30 mt-2 min-w-[180px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-xl border border-border bg-background p-1 shadow-lg"
+        >
+          {SORT_OPTIONS.map((option, index) => {
+            const selected = option.value === value;
+            return (
+              <button
+                key={option.value}
+                ref={(element) => { optionRefs.current[index] = element; }}
+                type="button"
+                role="option"
+                aria-selected={selected}
+                tabIndex={index === activeIndex ? 0 : -1}
+                onFocus={() => setActiveIndex(index)}
+                onClick={() => choose(option)}
+                onKeyDown={(event) => {
+                  if (event.key === "ArrowDown") {
+                    event.preventDefault();
+                    moveActive(1);
+                  } else if (event.key === "ArrowUp") {
+                    event.preventDefault();
+                    moveActive(-1);
+                  } else if (event.key === "Escape") {
+                    event.preventDefault();
+                    setOpen(false);
+                    triggerRef.current?.focus();
+                  }
+                }}
+                className={cn(
+                  "flex h-11 w-full items-center justify-between gap-3 rounded-lg px-3 text-left text-sm transition-colors hover:bg-muted focus:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+                  selected && "bg-muted font-medium",
+                )}
+              >
+                <span>{option.label}</span>
+                {selected && <Check className="size-4 shrink-0" aria-hidden="true" />}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function CategoryListing(props: Props) {
@@ -200,27 +322,19 @@ export default function CategoryListing(props: Props) {
                 aria-haspopup="dialog"
                 aria-expanded={drawerOpen}
                 onClick={() => setDrawerOpen(true)}
-                className="w-full flex-1 h-11 items-center lg:w-auto lg:flex-0 lg:h-10"
+                className="h-11 w-full flex-1 items-center lg:w-auto lg:flex-0"
               >
                 <SlidersHorizontal className="size-2 mr-1.5" />
                 Filters
                 {activeCount > 0 && <Badge className="ml-2">{activeCount}</Badge>}
               </Button>
-              <label className="relative flex items-center gap-1 w-full flex-1 lg:w-auto lg:flex-0">
-                <span className="hidden sm:inline">Sort by:</span>
-                <select
-                  value={sort}
-                  onChange={(event) => {
-                    const nextSort = event.target.value as ProductQuery["sort"];
-                    setSort(nextSort);
-                    setPage(1);
-                  }}
-                  className="w-full h-11 appearance-none rounded-full border-0 bg-transparent pr-6 font-medium text-foreground cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:ring-foreground lg:w-auto lg:h-10"
-                >
-                  {SORT_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-                </select>
-                <ChevronDown className="pointer-events-none absolute right-0 top-1/2 size-4 -translate-y-1/2 text-foreground" />
-              </label>
+              <SortDropdown
+                value={sort ?? "popular"}
+                onChange={(nextSort) => {
+                  setSort(nextSort);
+                  setPage(1);
+                }}
+              />
             </div>
           </div>
         </div>
@@ -263,7 +377,7 @@ export default function CategoryListing(props: Props) {
               ref={drawerCloseButtonRef}
               type="button"
               aria-label="Close filters"
-              className="size-10 rounded-full border border-border hover:bg-muted text-foreground"
+              className="flex size-10 items-center justify-center rounded-full border-0 bg-transparent text-foreground shadow-none outline-none transition-colors hover:bg-black/5 active:bg-black/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:hover:bg-white/10 dark:active:bg-white/15"
             >
               <X className="size-5" />
             </button>
