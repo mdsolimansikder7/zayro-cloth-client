@@ -47,22 +47,24 @@ export default function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background transition-colors">
-      <div className="mx-auto flex h-14 min-w-0 max-w-[1440px] items-center gap-1.5 px-3 sm:gap-3 sm:px-4 md:h-20 md:gap-8 md:px-8 lg:px-16">
-        {/* mobile menu button */}
-        <button
-          type="button"
-          aria-label="Menu"
-          aria-expanded={isMenuOpen}
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="flex size-10 shrink-0 items-center justify-center rounded-lg hover:bg-muted md:hidden"
-        >
-          {isMenuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
-        </button>
+      <div className="mx-auto flex h-14 min-w-0 max-w-[1440px] items-center gap-3 px-4 md:h-20 md:gap-8 md:px-8 lg:px-16">
+        {/* left: hamburger + logo */}
+        <div className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            aria-label="Menu"
+            aria-expanded={isMenuOpen}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg hover:bg-muted md:hidden"
+          >
+            {isMenuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
+          </button>
 
-        {/* logo */}
-        <Link href="/" className="shrink-0 font-heading text-xl tracking-tight sm:text-2xl md:text-[32px]">
-          ZAYRO
-        </Link>
+          {/* logo */}
+          <Link href="/" className="shrink-0 font-heading text-xl tracking-tight sm:text-2xl md:text-[32px]">
+            ZAYRO
+          </Link>
+        </div>
 
         {/* desktop nav */}
         <nav className="hidden items-center gap-5 md:flex lg:gap-8">
@@ -86,14 +88,14 @@ export default function SiteHeader() {
         </form>
 
         {/* icons */}
-        <div className="ml-auto flex min-w-0 items-center gap-0.5 sm:gap-2 md:gap-4">
+        <div className="ml-auto flex min-w-0 items-center gap-1 sm:gap-2 md:gap-4">
           {/* mobile search */}
           <button
             type="button"
             aria-label="Search"
             aria-expanded={isMenuOpen}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex size-10 items-center justify-center rounded-lg hover:bg-muted md:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-lg hover:bg-muted md:hidden"
           >
             <Search className="size-5" />
           </button>
@@ -104,7 +106,7 @@ export default function SiteHeader() {
           <Link
             href="/cart"
             aria-label={cartCount > 0 ? `Cart, ${cartCount} item${cartCount === 1 ? "" : "s"}` : "Cart"}
-            className="relative flex size-11 items-center justify-center rounded-lg hover:bg-muted"
+            className="relative flex h-10 w-10 items-center justify-center rounded-lg hover:bg-muted"
           >
             <ShoppingCart className="size-5" />
             {cartCount > 0 && (

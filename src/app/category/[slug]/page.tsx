@@ -1,8 +1,7 @@
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import AnnouncementBar from "@/components/announcement-bar";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
+import Breadcrumb from "@/components/breadcrumb";
 import CategoryListing from "@/components/category-listing";
 
 type SearchParams = Record<string, string | string[] | undefined>;
@@ -25,11 +24,12 @@ export default async function CategoryPage(props: PageProps<"/category/[slug]">)
       <SiteHeader />
       <main className="bg-background">
         <div className="mx-auto max-w-[1440px] px-4 pb-16 pt-5 md:px-8 lg:px-16 lg:pb-24">
-          <nav className="flex items-center gap-1 text-xs text-muted-foreground sm:text-sm">
-            <Link href="/" className="hover:text-foreground">Home</Link>
-            <ChevronRight className="size-3.5" />
-            <span className="text-foreground">{title}</span>
-          </nav>
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: title, current: true },
+            ]}
+          />
           <CategoryListing
             slug={slug}
             initialSearch={getParam("q")}

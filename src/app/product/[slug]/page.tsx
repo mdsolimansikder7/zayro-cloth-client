@@ -1,9 +1,8 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronRight } from "lucide-react";
 import AnnouncementBar from "@/components/announcement-bar";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
+import Breadcrumb from "@/components/breadcrumb";
 import ProductGallery from "@/components/product-gallery";
 import ProductInfo from "@/components/product-info";
 import ProductTabs from "@/components/product-tabs";
@@ -39,13 +38,13 @@ export default async function ProductPage(props: PageProps<"/product/[slug]">) {
 
       <main className="bg-background">
         <div className="mx-auto max-w-[1440px] px-4 pb-16 pt-4 md:px-8 lg:px-16 lg:pb-24">
-          <nav className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground sm:text-sm">
-            <Link href="/" className="hover:text-foreground">Home</Link>
-            <ChevronRight className="size-3.5" />
-            <Link href={categoryHref} className="hover:text-foreground">{product.category}</Link>
-            <ChevronRight className="size-3.5" />
-            <span className="text-foreground">{product.title}</span>
-          </nav>
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: product.category, href: categoryHref },
+              { label: product.title, current: true },
+            ]}
+          />
 
           {/* bame gallery, daane product info */}
           <div className="mt-5 grid gap-8 lg:grid-cols-[45%_1fr] lg:gap-10">

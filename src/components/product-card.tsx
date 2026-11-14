@@ -71,7 +71,7 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
 
         {/* product name */}
-        <h3 className="mt-4 truncate text-sm font-semibold sm:text-base">
+        <h3 className="mt-4 line-clamp-1 text-sm font-semibold sm:text-base">
           {product.title}
         </h3>
       </Link>
@@ -82,21 +82,24 @@ export default function ProductCard({ product }: { product: Product }) {
         <span className="text-xs text-muted-foreground">{product.rating}/5</span>
       </div>
 
-      {/* price row: notun dam, purano dam kete, discount badge */}
-      <div className="mt-1.5 flex flex-wrap items-center gap-2">
-        <span className="text-lg font-bold sm:text-xl">{formatMoney(product.price)}</span>
+      {/* price row: current price, strikethrough old price, discount badge in one flex row when space allows;
+          on narrow cards the badge wraps to its own line; min-height keeps card heights even */}
+      <div className="mt-1.5 flex flex-col gap-1">
+        <div className="flex flex-wrap items-center gap-2 min-h-[48px]">
+          <span className="text-lg font-bold sm:text-xl">{formatMoney(product.price)}</span>
 
-        {product.oldPrice && (
-          <span className="text-lg font-bold text-muted-foreground line-through sm:text-xl">
-            {formatMoney(product.oldPrice)}
-          </span>
-        )}
+          {product.oldPrice && (
+            <span className="text-lg font-bold text-muted-foreground line-through sm:text-xl">
+              {formatMoney(product.oldPrice)}
+            </span>
+          )}
 
-        {product.discount && (
-          <span className="rounded-full bg-[#FF3333]/10 px-2 py-0.5 text-[11px] font-medium text-[#FF3333]">
-            -{product.discount}%
-          </span>
-        )}
+          {product.discount && (
+            <span className="rounded-full bg-[#FF3333]/10 px-2 py-0.5 text-[11px] font-medium text-[#FF3333]">
+              -{product.discount}%
+            </span>
+          )}
+        </div>
       </div>
     </article>
   );

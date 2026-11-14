@@ -40,24 +40,24 @@ export default function Hero() {
         <div className="overflow-hidden bg-[#f1f0ef] px-4 py-7 sm:px-6 sm:py-8 lg:px-8 xl:px-16">
           <div className="relative grid items-center gap-8 lg:min-h-[620px] lg:grid-cols-[1.08fr_0.92fr] lg:gap-4">
             <div className="pt-2 lg:pl-2">
-              <h1 className="max-w-[620px] font-black uppercase leading-[0.92] tracking-[-0.06em] text-[36px] sm:text-[56px] lg:text-[72px]">
+              <h1 className="max-w-[620px] font-black uppercase leading-[1.05] tracking-tight text-4xl sm:text-5xl md:text-[56px] lg:text-[72px]">
                 {hero.title}
               </h1>
 
-              <p className="mt-5 max-w-[560px] text-sm leading-6 text-[#4e4e4e] sm:text-base">
+              <p className="mt-5 max-w-[560px] text-base leading-6 text-[#4e4e4e]">
                 {hero.description}
               </p>
 
               {hero.ctaLabel && hero.ctaUrl && (
                 <Link
                   href={hero.ctaUrl}
-                  className="mt-7 inline-flex h-12 items-center justify-center rounded-full bg-[#111111] px-7 text-sm font-semibold text-white transition-transform hover:scale-[1.01]"
+                  className="mt-7 flex w-full sm:w-auto h-12 items-center justify-center rounded-full bg-[#111111] px-7 text-sm font-semibold text-white transition-transform hover:scale-[1.01]"
                 >
                   {hero.ctaLabel}
                 </Link>
               )}
 
-              <div className="mt-8 grid grid-cols-3 gap-3 sm:flex sm:flex-wrap sm:gap-6 lg:mt-10">
+              <div className="mt-8 grid grid-cols-3 gap-4 sm:gap-6 lg:mt-10">
                 {stats.map((stat, index) => (
                   <div
                     key={`${stat.label}-${index}`}
@@ -69,10 +69,10 @@ export default function Hero() {
                           : "min-w-0 border-l border-[#c5c5c1] pl-3 sm:pl-4"
                     }
                   >
-                    <p className="font-heading text-[22px] font-black leading-none tracking-[-0.05em] sm:text-[30px]">
+                    <p className="font-heading text-2xl font-black leading-none sm:text-[30px]">
                       {stat.value}
                     </p>
-                    <p className="mt-2 max-w-[150px] text-[10px] leading-4 text-[#4d4d4d] sm:text-sm">
+                    <p className="mt-2 max-w-[150px] text-xs leading-4 text-[#4d4d4d] sm:text-sm">
                       {stat.label}
                     </p>
                   </div>

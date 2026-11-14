@@ -181,34 +181,47 @@ export default function CategoryListing(props: Props) {
     <div className="mt-6 grid items-start gap-6 lg:mt-5 lg:grid-cols-[250px_1fr]">
       <CategoryFilters facets={facets} initialFilters={filters} onApply={applyFilters} />
       <div>
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h1 className="font-heading text-2xl uppercase tracking-tight lg:text-[32px]">{title}</h1>
-          <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground sm:justify-end sm:text-sm">
-            <span>{isLoading ? "Loading products…" : `Showing ${products.length} of ${pagination.total} products`}</span>
-            <Button
-              type="button"
-              variant="outline"
-              aria-label="Filters"
-              aria-haspopup="dialog"
-              aria-expanded={drawerOpen}
-              onClick={() => setDrawerOpen(true)}
-              className="lg:hidden"
-            >
-              <SlidersHorizontal className="size-2 mr-1.5" />
-              Filters
-              {activeCount > 0 && <Badge className="ml-2">{activeCount}</Badge>}
-            </Button>
-            <label className="relative flex items-center gap-1">
-              <span className="hidden sm:inline">Sort by:</span>
-              <select value={sort} onChange={(event) => {
-                const nextSort = event.target.value as ProductQuery["sort"];
-                setSort(nextSort);
-                setPage(1);
-              }} className="h-8 appearance-none rounded-full bg-transparent pr-6 font-medium text-foreground focus:outline-none">
-                {SORT_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-              </select>
-              <ChevronDown className="pointer-events-none absolute right-0 top-1/2 size-4 -translate-y-1/2 text-foreground" />
-            </label>
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-3">
+          <div className="flex flex-col gap-4">
+            <h1 className="font-heading text-2xl uppercase tracking-tight lg:text-[32px]">{title}</h1>
+            <p className="text-sm text-muted-foreground lg:hidden">
+              {isLoading ? "Loading products…" : `Showing ${products.length} of ${pagination.total} products`}
+            </p>
+          </div>
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-3">
+            <p className="hidden lg:flex text-xs text-muted-foreground sm:text-sm">
+              {isLoading ? "Loading products…" : `Showing ${products.length} of ${pagination.total} products`}
+            </p>
+            <div className="flex gap-3 w-full lg:w-auto">
+              <Button
+                type="button"
+                variant="outline"
+                aria-label="Filters"
+                aria-haspopup="dialog"
+                aria-expanded={drawerOpen}
+                onClick={() => setDrawerOpen(true)}
+                className="w-full flex-1 h-11 items-center lg:w-auto lg:flex-0 lg:h-10"
+              >
+                <SlidersHorizontal className="size-2 mr-1.5" />
+                Filters
+                {activeCount > 0 && <Badge className="ml-2">{activeCount}</Badge>}
+              </Button>
+              <label className="relative flex items-center gap-1 w-full flex-1 lg:w-auto lg:flex-0">
+                <span className="hidden sm:inline">Sort by:</span>
+                <select
+                  value={sort}
+                  onChange={(event) => {
+                    const nextSort = event.target.value as ProductQuery["sort"];
+                    setSort(nextSort);
+                    setPage(1);
+                  }}
+                  className="w-full h-11 appearance-none rounded-full border border-border bg-transparent pr-6 font-medium text-foreground focus:outline-none lg:w-auto lg:h-8 lg:border-0"
+                >
+                  {SORT_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-0 top-1/2 size-4 -translate-y-1/2 text-foreground" />
+              </label>
+            </div>
           </div>
         </div>
 
