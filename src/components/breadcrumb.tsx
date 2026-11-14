@@ -16,30 +16,39 @@ interface BreadcrumbProps {
 }
 
 // Single reusable breadcrumb used on every page.
-// nav > ol, single line (no wrap), separator rendered inside the same li as its item.
+// nav > ol, single line (no wrap). The chevron separator lives inside the li,
+// right before the next label, so nothing can wrap to a new line.
 export default function Breadcrumb({ items, className }: BreadcrumbProps) {
   return (
-    <nav aria-label="breadcrumb" className={className}>
-      <ol className={cn("flex flex-nowrap items-center gap-1.5 text-sm text-muted-foreground overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden")}>
+    <nav aria-label="Breadcrumb" className={className}>
+      <ol className={cn("flex flex-nowrap items-center gap-1.5 text-sm overflow-hidden whitespace-nowrap text-muted-foreground", className)}>
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (
-            <li key={item.href ?? item.label ?? index} className="inline-flex items-center gap-1 min-w-0">
+            <li key={item.href ?? item.label ?? index} className="flex items-center gap-1.5 min-w-0">
               {item.href ? (
-                <Link href={item.href} className="truncate max-w-[260px] hover:text-foreground">
+                <Link
+                  href={item.href}
+                  className={cn(
+                    !isLast ? "flex-shrink-0" : "",
+                    "truncate transition-colors hover:text-foreground",
+                    isLast ? "text-foreground" : "text-muted-foreground"
+                  )}
+                >
                   {item.label}
                 </Link>
               ) : (
                 <span
                   className={cn(
-                    "truncate max-w-[260px]",
+                    !isLast ? "flex-shrink-0" : "",
+                    "truncate",
                     isLast ? "text-foreground" : "text-muted-foreground"
                   )}
                 >
                   {item.label}
                 </span>
               )}
-              {!isLast && <ChevronRight className="size-3.5 shrink-0" aria-hidden="true" />}
+              {!isLast && <ChevronRight className="size-4 shrink-0" aria-hidden="true" />}
             </li>
           );
         })}

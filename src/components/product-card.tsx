@@ -11,8 +11,6 @@ import { useSession } from "@/lib/auth-client";
 import { toast } from "@/components/ui/toast";
 import { formatMoney } from "@/lib/format-money";
 
-// Ekta product card - New Arrivals ar Top Selling duitatei ei card ta use hoy
-// card e click korle oi product er details page khule jay
 export default function ProductCard({ product }: { product: Product }) {
   const { data: session } = useSession();
   const router = useRouter();
@@ -70,34 +68,39 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
         </div>
 
-        {/* product name */}
-        <h3 className="mt-4 line-clamp-1 text-sm font-semibold sm:text-base">
+        {/* product name - one line, fixed height so every card in a row matches */}
+        <h3 className="mt-4 line-clamp-1 h-[1.25rem] leading-none text-sm font-semibold sm:text-base">
           {product.title}
         </h3>
       </Link>
 
-      {/* rating + number (4.5/5) */}
+      {/* rating + number - consistent spacing on every card */}
       <div className="mt-1.5 flex items-center gap-2">
         <Stars rating={product.rating} />
         <span className="text-xs text-muted-foreground">{product.rating}/5</span>
       </div>
 
-      {/* price row: current price, strikethrough old price, discount badge in one flex row when space allows;
-          on narrow cards the badge wraps to its own line; min-height keeps card heights even */}
-      <div className="mt-1.5 flex flex-col gap-1">
-        <div className="flex flex-wrap items-center gap-2 min-h-[48px]">
-          <span className="text-lg font-bold sm:text-xl">{formatMoney(product.price)}</span>
+      {/* price area - fixed two-line structure so card heights stay even */}
+      <div className="mt-1.5">
+        {/* line 1: current price + strikethrough old price */}
+        <div className="flex items-baseline gap-2 whitespace-nowrap">
+          <span className="text-lg font-bold">{formatMoney(product.price)}</span>
 
           {product.oldPrice && (
-            <span className="text-lg font-bold text-muted-foreground line-through sm:text-xl">
+            <span className="text-lg font-bold text-muted-foreground line-through">
               {formatMoney(product.oldPrice)}
             </span>
           )}
+        </div>
 
-          {product.discount && (
+        {/* line 2: discount badge on its own line; 24px reserved even without a discount */}
+        <div className="mt-1 flex min-h-[24px] items-start">
+          {product.discount ? (
             <span className="rounded-full bg-[#FF3333]/10 px-2 py-0.5 text-[11px] font-medium text-[#FF3333]">
               -{product.discount}%
             </span>
+          ) : (
+            <span className="min-h-[24px]" />
           )}
         </div>
       </div>

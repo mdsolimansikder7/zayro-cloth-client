@@ -25,6 +25,10 @@ export const metadata: Metadata = {
   title: "Zayro — Find Clothes That Match Your Style",
   description:
     "Browse through our diverse range of meticulously crafted garments, designed to bring out your individuality and cater to your sense of style.",
+  icons: [
+    { rel: "icon", type: "image/svg+xml", url: "/favicon.svg" },
+    { rel: "apple-touch-icon", url: "/favicon.svg" },
+  ],
 };
 
 export default function RootLayout({

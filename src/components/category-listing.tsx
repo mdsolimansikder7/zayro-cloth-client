@@ -215,7 +215,7 @@ export default function CategoryListing(props: Props) {
                     setSort(nextSort);
                     setPage(1);
                   }}
-                  className="w-full h-11 appearance-none rounded-full border border-border bg-transparent pr-6 font-medium text-foreground focus:outline-none lg:w-auto lg:h-8 lg:border-0"
+                  className="w-full h-11 appearance-none rounded-full border-0 bg-transparent pr-6 font-medium text-foreground cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-offset-0 focus-visible:ring-foreground lg:w-auto lg:h-10"
                 >
                   {SORT_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
                 </select>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #171717; }
+      .mark { fill: #ffffff; }
+    }
+    .bg { fill: #ffffff; }
+    .mark { fill: #171717; }
+  </style>
+  <rect x="2" y="2" width="28" height="28" rx="7" class="bg" />
+  <g class="mark">
+    <!-- Ekta / unity: two interlocking links -->
+    <circle cx="11.5" cy="16" r="6.5" />
+    <circle cx="20.5" cy="16" r="6.5" />
+  </g>
+</svg>
