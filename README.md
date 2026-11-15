@@ -31,15 +31,30 @@ Zayro is a modern, mobile-first online clothing store. This repository contains 
 
 ## Tech Stack
 
+### Frontend
+
 | Area | Technology |
 | --- | --- |
 | Framework | [Next.js](https://nextjs.org) (App Router) |
 | Language | TypeScript |
+| UI library | React |
 | Styling | Tailwind CSS, shadcn/ui |
 | Icons | lucide-react |
-| Database | MongoDB Atlas |
+
+### Backend
+
+| Area | Technology |
+| --- | --- |
+| Runtime | Node.js |
+| Framework | Express.js (REST API) |
+| Database | MongoDB Atlas with Mongoose |
 | Image storage | Cloudflare R2 |
-| Hosting | Vercel |
+
+### Deployment
+
+| Area | Technology |
+| --- | --- |
+| Hosting | Vercel (frontend and API) |
 
 ---
 
