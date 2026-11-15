@@ -1,4 +1,4 @@
-# ZAYRO: Clothing Store (Client)
+# ZAYRO: Clothing Store
 
 Zayro is a modern, mobile-first online clothing store. This repository contains the **customer-facing storefront** built with Next.js.
 
