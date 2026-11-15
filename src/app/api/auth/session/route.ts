@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { API_BASE_URL, type ServerAuthUser } from "@/lib/server-auth";
+import { serverApiBase } from "@/lib/api-base";
+import type { ServerAuthUser } from "@/lib/server-auth";
 
 const SESSION_COOKIE = "zayro-session";
 const sessionCookie = {
@@ -18,7 +19,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const authResponse = await fetch(`${API_BASE_URL}/api/auth/me`, {
+    const authResponse = await fetch(`${serverApiBase()}/api/auth/me`, {
       headers: { Authorization: `Bearer ${token}` },
       cache: "no-store",
     });

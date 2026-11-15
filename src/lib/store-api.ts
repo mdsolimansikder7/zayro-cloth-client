@@ -1,8 +1,6 @@
 import type { Product } from "@/types/product";
+import { API_BASE } from "@/lib/api-base";
 
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000")
-  .replace(/\/+$/, "")
-  .replace(/\/api$/, "");
 const TOKEN_KEY = "zayro-auth-token";
 
 export class StoreApiError extends Error {
@@ -105,10 +103,11 @@ export async function apiFetch(path: string, init: RequestInit = {}) {
     if (token) headers.set("Authorization", `Bearer ${token}`);
   }
 
-  const response = await fetch(`${API_BASE_URL}/api/${path.replace(/^\/+/, "")}`, {
+  const response = await fetch(`${API_BASE}/api/${path.replace(/^\/+/, "")}`, {
     ...init,
     headers,
     cache: "no-store",
+    credentials: "include",
   });
   const body: unknown = await response.json().catch(() => ({}));
   if (!response.ok) {
@@ -125,15 +124,16 @@ export async function apiFetch(path: string, init: RequestInit = {}) {
 }
 
 function buildUrl(path: string, query?: Record<string, string | number | undefined>) {
-  const url = new URL(`${API_BASE_URL}/api/${path}`);
+  const url = new URLSearchParams();
   for (const [key, value] of Object.entries(query ?? {})) {
-    if (value !== undefined && value !== "") url.searchParams.set(key, String(value));
+    if (value !== undefined && value !== "") url.set(key, String(value));
   }
-  return url;
+  const queryString = url.toString();
+  return `${API_BASE}/api/${path.replace(/^\/+/, "")}${queryString ? `?${queryString}` : ""}`;
 }
 
-async function request<T>(url: URL): Promise<T> {
-  const response = await fetch(url, { cache: "no-store" });
+async function request<T>(url: string): Promise<T> {
+  const response = await fetch(url, { cache: "no-store", credentials: "include" });
   const body: unknown = await response.json().catch(() => ({}));
   if (!response.ok) {
     const message =
@@ -165,6 +165,7 @@ export async function getProducts(query: ProductQuery = {}) {
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   const response = await fetch(buildUrl(`products/${encodeURIComponent(slug)}`), {
     cache: "no-store",
+    credentials: "include",
   });
   if (response.status === 404) return null;
   const body: unknown = await response.json().catch(() => ({}));

@@ -1,10 +1,7 @@
 import "server-only";
 
 import { cookies } from "next/headers";
-
-const API_BASE_URL = (process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000")
-  .replace(/\/+$/, "")
-  .replace(/\/api$/, "");
+import { serverApiBase } from "@/lib/api-base";
 
 export type ServerAuthUser = {
   id: string;
@@ -20,7 +17,7 @@ export async function getServerSession() {
   if (!token) return null;
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+    const response = await fetch(`${serverApiBase()}/api/auth/me`, {
       headers: { Authorization: `Bearer ${token}` },
       cache: "no-store",
     });
@@ -33,5 +30,3 @@ export async function getServerSession() {
     return null;
   }
 }
-
-export { API_BASE_URL };

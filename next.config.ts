@@ -1,10 +1,22 @@
 import type { NextConfig } from "next";
 
+const backendUrl = (process.env.BACKEND_URL || "https://zayro-server.vercel.app")
+  .replace(/\/+$/, "")
+  .replace(/\/api$/, "");
+
 const nextConfig: NextConfig = {
   experimental: {
     authInterrupts: true,
   },
   reactCompiler: true,
+  async rewrites() {
+    return [
+      {
+        source: "/backend/:path*",
+        destination: `${backendUrl}/api/:path*`,
+      },
+    ];
+  },
   turbopack: {
     rules: {
       "*.css": {

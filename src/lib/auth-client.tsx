@@ -40,7 +40,8 @@ async function syncServerSession(token: string | null) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token }),
-    } : { method: "DELETE" });
+      credentials: "include",
+    } : { method: "DELETE", credentials: "include" });
   } catch {
     // Protected routes remain safely unavailable until the session can be
     // verified server-side.
