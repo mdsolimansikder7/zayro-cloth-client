@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const backendUrl = (process.env.BACKEND_URL || "https://zayro-server.vercel.app")
+const backendUrl = (process.env.BACKEND_URL ?? "https://zayro-server.vercel.app")
   .replace(/\/+$/, "")
   .replace(/\/api$/, "");
 
@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/backend/:path*",
-        destination: `${backendUrl}/api/:path*`,
+        destination: `${backendUrl}/:path*`,
       },
     ];
   },
