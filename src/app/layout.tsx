@@ -7,6 +7,7 @@ import { AccountDataProvider } from "@/components/account-data-provider";
 import AuthProvider from "@/components/auth-provider";
 import { CartDataProvider } from "@/components/cart-data-provider";
 import { StorefrontProvider } from "@/components/storefront-provider";
+import { Analytics } from "@vercel/analytics/next";
 
 // Heading font
 const archivoBlack = Archivo_Black({
@@ -50,6 +51,7 @@ export default function RootLayout({
             </AuthProvider>
           </Toaster>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
